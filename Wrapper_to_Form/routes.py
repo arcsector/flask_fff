@@ -67,7 +67,7 @@ def updatesubform(form_obj, func_obj, function_name) -> dict:
 #
 
 def createsubform(object_typ, func_obj):
-    creation_function_name = object_typ
+	creation_function_name = object_typ
 	btnlist = updatesubform(SubForm, func_obj, creation_function_name)
 	#session['buttonlist'] = btnlist
 	setattr(CreateStix1Form, 'object_form', FormField(SubForm))
@@ -75,9 +75,9 @@ def createsubform(object_typ, func_obj):
 	return btnlist, form
 
 def CreateForm():
-    form = CreateBaseForm(request.form)
-    if request.method == 'POST':
-        object_typ = request.form['object_type']
-        btnlist, form = createsubform(object_typ, ArbitraryPasser.func_dict[object_typ])
-        return render_template("base.html", form=form)
-    return render_template("base.html", form=form)
+	form = CreateBaseForm(request.form)
+	if request.method == 'POST':
+		object_typ = request.form['object_type']
+		btnlist, form = createsubform(object_typ, ArbitraryPasser.func_dict[object_typ])
+		return render_template("base.html", form=form)
+	return render_template("base.html", form=form)
