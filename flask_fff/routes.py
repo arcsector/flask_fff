@@ -56,7 +56,7 @@ def updatesubform(form_obj, func_obj, function_name) -> dict:
 		else:
 			log('attr not set: ' + str(vartype))
 	#print(buttonlist)
-	return buttonlist
+	#return buttonlist
 
 #def createminorform(stix_obj, function_name):
 #	global MinorForm
@@ -79,5 +79,5 @@ def CreateForm():
 	if request.method == 'POST':
 		object_typ = request.form['object_type']
 		btnlist, form = createsubform(object_typ, ArbitraryPasser.func_dict[object_typ])
-		return render_template("base.html", form=form)
+		return render_template("base.html", form=form, object_typ=object_typ)
 	return render_template("base.html", form=form)

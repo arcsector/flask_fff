@@ -3,8 +3,9 @@ Routes and views for the flask application.
 """
 from .routes import CreateForm
 from datetime import datetime
-from flask import render_template
-from Wrapper_to_Form import app
+from flask import render_template, Flask
+
+app=Flask(__name__)
 
 @app.route('/')
 def createform():

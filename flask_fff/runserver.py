@@ -1,5 +1,5 @@
 """
-This script runs the Wrapper_to_Form application using a development server.
+This script runs the flask_fff application using a development server.
 """
 
 from os import environ
