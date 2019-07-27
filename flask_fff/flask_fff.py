@@ -1,16 +1,15 @@
 from flask import Flask, render_template, flash, request, redirect, url_for, current_app
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, BooleanField, SelectMultipleField, IntegerField, PasswordField, FormField, FieldList, DateTimeField, DateField, FloatField
 from flask_wtf import FlaskForm
-from .__init__ import ArbitraryPasser
 from flask_wtf.file import FileField, FileRequired
 from traceback import format_exc
-from inspect import signature, Signature
+from inspect import signature, Signature, _empty
 import logging
 import re
 from io import StringIO, BytesIO
 from datetime import datetime, date
 
-class myForm:
+class FFF:
 	def __init__(self, app=None):
 		self.app = app
 		self.form_dict = {}
@@ -19,19 +18,21 @@ class myForm:
 
 	def init_app(self, app):
 		app.config.setdefault('form_template', 'base.html')
+		with app.app_context():
+			self.create_forms()
 	
 	def create_forms(self):
 		form_dict = {}
 		for rule in current_app.url_map.iter_rules():
 			func_name = rule.endpoint
-			func = current_app.view_fucntions[func_name]
+			func = current_app.view_functions[func_name]
 			form_dict[func_name] = self.create_form(func)
 			self.form_dict[func_name] = form_dict[func_name]
 		return form_dict
 	
 	def create_form(self, func):
 		class form_obj(Form):
-			pass
+			_submit = SubmitField("Submit")
 		sig = signature(func)
 		params = sig.parameters
 		for varname in params.keys():
@@ -50,6 +51,8 @@ class myForm:
 				setattr(form_obj, varname, DateField(varname+":"))
 			elif vartype == StringIO or vartype == BytesIO:
 				setattr(form_obj, varname, FileField(varname+":"))
+			elif vartype == _empty:
+				pass
 			#elif vartype == list:
 			#	# get minor object specifications
 			#	minor_func = func_obj.minor_object_list[varname]
@@ -66,15 +69,18 @@ class myForm:
 			#		setattr(form_obj, varname, SelectMultipleField(varname+':', choices=[(i, i) for i in minor_func]))
 			else:
 				raise ValueError('attr not set: ' + str(vartype))
-		return form_obj
+		class Form_Obj(Form):
+			_form = FormField(form_obj)
+			see = "test"
+		return Form_Obj, form_obj
 
 	def return_form(self, func_name):
 		if func_name not in self.form_dict:
-			raise ValueError("{} not a function registered with flask; use @app.route decorator to register")
+			raise ValueError("{} not a function registered with flask; use @app.route decorator to register. The available forms are {}".format(func_name, self.form_dict.keys()))
 		return self.form_dict[func_name]
 	
 	def return_form_instance(self, func_name):
 		if func_name not in self.form_dict:
-			raise ValueError("{} not a function registered with flask; use @app.route decorator to register")
+			raise ValueError("{} not a function registered with flask; use @app.route decorator to register. The available forms are {}".format(func_name, self.form_dict.keys()))
 		form_obj = self.form_dict[func_name]
 		return form_obj(request.form)
