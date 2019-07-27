@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
 	name='Flask-FFF',
@@ -7,12 +7,15 @@ setup(
 	url='https://github.com/arcsector/flask_fff',
 	author='arcsector',
 	author_email='george.haraksin@laverne.edu',
-	version=0.1
+	version=0.1,
+	#py_modules=['flask_fff'],
+	include_package_data=True,
+	platforms='any',
+	packages=find_packages(),
 	license='BSD License',
-	packages=[
-		'flask>1.0',
+	install_requires=[
+		'flask>1.0.0',
 		'flask_wtf',
-		'wtforms',
-		'inspect'
+		'wtforms'
 	]
 )

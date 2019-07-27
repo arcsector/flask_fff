@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: Flask-FFF
+Version: 0.1
+Summary: Flask - Form Follows Function
+Home-page: https://github.com/arcsector/flask_fff
+Author: arcsector
+Author-email: george.haraksin@laverne.edu
+License: BSD License
+Description: Flask - Form Follows Function is a module which allows you to spin up a webform based on a python function quickly.
+Platform: any
